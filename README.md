@@ -21,5 +21,4 @@
 - Notion: [기술 정리 & 프로젝트](https://www.notion.so/9a5c8aaf868f436eaf1c035404335a5e)
 
 ---
-
-![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=men16922&show_icons=true&theme=default 
+![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=men16922&show_icons=true&theme=default)
