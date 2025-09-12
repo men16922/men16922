@@ -1,21 +1,25 @@
-- 👋 Hi, I’m @men16922
-- 👀 I’m interested in ...
-- 🌱 I’m currently learning ...
-- 💞️ I’m looking to collaborate on ...
-- 📫 How to reach me ...
+# 👋 Hi, I’m @men16922  
 
-<!---
-men16922/men16922 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
-![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=men16922&show_icons=true&theme=default)
+안녕하세요, 백엔드 서버 개발자 **최병민**입니다.  
+현재 **현대오토에버**에서 Technical Advisor(TA)로 근무 중이며,  
+클라우드 아키텍처와 DevOps, AI 기반 서비스에 깊은 관심을 가지고 있습니다.  
 
-BackEnd 서버 개발자 최병민입니다.
-현재 재직중인 회사는 '빗썸코리아' 입니다.
+---
 
-Backend/DB/FrontEnd 개발 다방면에 지식을 쌓고 싶습니다. <p>
-현재는 Spring 위주로 학습을 하고 있으며, MSA와 TDD에 관심이 있습니다.
+### 👀 관심 분야
+- **클라우드 네이티브 아키텍처** (MSA, Kubernetes, AWS)  
+- **DevOps & CI/CD** (GitLab, ArgoCD, IaC, Observability)  
+- **데이터 엔지니어링** (Kafka, MongoDB, Redis, PostgreSQL)  
+- **AI/LLM 활용** (RAG, Amazon Bedrock, GenAI 운영 자동화)  
 
-Notion link : https://www.notion.so/9a5c8aaf868f436eaf1c035404335a5e <p>
-  포트폴리오 : https://www.notion.so/0dab080e9ccf490a8391be50fa01448f <p>
-  자기소개 : https://men16922.github.io/
+### 💞️ 협업하고 싶은 주제
+- 대규모 **멀티테넌트 SaaS 아키텍처** 설계  
+- **GenAI + DevOps 자동화** 프로젝트  
+
+### 📫 Contact
+- Portfolio: [GitHub Pages](https://men16922.github.io/)  
+- Notion: [기술 정리 & 프로젝트](https://www.notion.so/9a5c8aaf868f436eaf1c035404335a5e)
+
+---
+
+![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=men16922&show_icons=true&theme=default 
