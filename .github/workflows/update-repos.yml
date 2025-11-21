@@ -1,0 +1,170 @@
+name: Update Repository List
+
+on:
+  schedule:
+    # Run every Monday at 00:00 UTC
+    - cron: '0 0 * * 1'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-repositories:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch all repositories
+        id: fetch-repos
+        run: |
+          # Fetch all repositories for the user
+          curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/users/men16922/repos?per_page=100&sort=updated" \
+            > repos.json
+
+          echo "Repository count: $(jq length repos.json)"
+
+      - name: Generate REPOSITORIES.md
+        run: |
+          cat > REPOSITORIES.md << 'EOF'
+          # 📂 All Repositories
+
+          Complete categorized list of all GitHub repositories organized by theme.
+
+          > **Total**: $(jq length repos.json) repositories across 7 themes
+          > **Last Updated**: $(date +%Y-%m-%d)
+
+          ---
+
+          ## 🤖 AI/LLM (theme-ai-llm)
+
+          AI, Machine Learning, and Large Language Model projects.
+
+          | Repository | Description | Updated |
+          |------------|-------------|---------|
+          EOF
+
+          # Add AI/LLM repos
+          jq -r '.[] | select(.name | test("ai-|llm|brandy|blackcow|shopping-helper|prompt|assistant|kakaotalk-summarization")) | "| [\(.name)](\(.html_url)) | \(.description // "N/A") | \(.updated_at | split("T")[0]) |"' repos.json >> REPOSITORIES.md
+
+          cat >> REPOSITORIES.md << 'EOF'
+
+          ---
+
+          ## ☁️ DevOps & CI/CD (theme-devops)
+
+          Infrastructure as Code, Kubernetes, CI/CD, and cloud operations.
+
+          | Repository | Description | Updated |
+          |------------|-------------|---------|
+          EOF
+
+          # Add DevOps repos
+          jq -r '.[] | select(.name | test("docker|k8s|cloud|devops|dva|amplify|nodejs-app")) | "| [\(.name)](\(.html_url)) | \(.description // "N/A") | \(.updated_at | split("T")[0]) |"' repos.json >> REPOSITORIES.md
+
+          cat >> REPOSITORIES.md << 'EOF'
+
+          ---
+
+          ## 🏗️ Microservices & Backend (theme-microservices)
+
+          Microservice architecture, Spring Cloud, and backend services.
+
+          | Repository | Description | Updated |
+          |------------|-------------|---------|
+          EOF
+
+          # Add Microservices repos
+          jq -r '.[] | select(.name | test("service|gateway|ecommerce|example-|coupon")) | "| [\(.name)](\(.html_url)) | \(.description // "N/A") | \(.updated_at | split("T")[0]) |"' repos.json >> REPOSITORIES.md
+
+          cat >> REPOSITORIES.md << 'EOF'
+
+          ---
+
+          ## 💰 Finance & Payment (theme-finance)
+
+          Payment systems and financial service projects.
+
+          | Repository | Description | Updated |
+          |------------|-------------|---------|
+          EOF
+
+          # Add Finance repos
+          jq -r '.[] | select(.name | test("kakao.*pay|membership")) | "| [\(.name)](\(.html_url)) | \(.description // "N/A") | \(.updated_at | split("T")[0]) |"' repos.json >> REPOSITORIES.md
+
+          cat >> REPOSITORIES.md << 'EOF'
+
+          ---
+
+          ## ⚡ Performance & Concurrency (theme-performance)
+
+          Load testing, performance optimization, and concurrency studies.
+
+          | Repository | Description | Updated |
+          |------------|-------------|---------|
+          EOF
+
+          # Add Performance repos
+          jq -r '.[] | select(.name | test("artillery|cpu-bound|boardserver|redis|quartz")) | "| [\(.name)](\(.html_url)) | \(.description // "N/A") | \(.updated_at | split("T")[0]) |"' repos.json >> REPOSITORIES.md
+
+          cat >> REPOSITORIES.md << 'EOF'
+
+          ---
+
+          ## 📚 Study & Learning (theme-study)
+
+          Coding practice, tutorials, and learning projects.
+
+          | Repository | Description | Updated |
+          |------------|-------------|---------|
+          EOF
+
+          # Add Study repos
+          jq -r '.[] | select(.name | test("[Cc]oding|[Ll]eetcode|git-|spring-|jpa|react|certification|mcp-course|fastcampus|mongodb|think|oodp|tsid|nice|unification|fbtb|test")) | "| [\(.name)](\(.html_url)) | \(.description // "N/A") | \(.updated_at | split("T")[0]) |"' repos.json >> REPOSITORIES.md
+
+          cat >> REPOSITORIES.md << 'EOF'
+
+          ---
+
+          ## 🌐 Personal & Portfolio (theme-personal)
+
+          Personal profile and portfolio website.
+
+          | Repository | Description | Updated |
+          |------------|-------------|---------|
+          EOF
+
+          # Add Personal repos
+          jq -r '.[] | select(.name == "men16922" or .name == "men16922.github.io") | "| [\(.name)](\(.html_url)) | \(.description // "N/A") | \(.updated_at | split("T")[0]) |"' repos.json >> REPOSITORIES.md
+
+          cat >> REPOSITORIES.md << 'EOF'
+
+          ---
+
+          > This repository index is automatically updated every Monday. For the most up-to-date information, visit the [GitHub profile](https://github.com/men16922).
+          EOF
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          git diff --exit-code REPOSITORIES.md || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push if changed
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add REPOSITORIES.md
+          git commit -m "chore: Auto-update repository list
+
+          🤖 Generated with GitHub Actions
+
+          Co-Authored-By: GitHub Actions <github-actions[bot]@users.noreply.github.com>"
+          git push
